@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="google" content="notranslate" />
+    <title>CRC-32 Test</title>
+    <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon" />
+    <script src="crc32.js" type="module" async></script>
+    <script type="module" defer>
+      import CRC32 from "./crc32.js";
+
+      function toHexString(uint32) {
+        return "0x" + uint32.toString(16).toUpperCase();
+      }
+
+      function check(crc) {
+        console.assert(crc == EXPECTED, "CRC-32 is wrong! Encountered value: %s, expected: %s", toHexString(crc), toHexString(EXPECTED));
+      }
+
+      const EXPECTED = 0xCBF43926;
+      const TEST_STRING = "123456789";
+      const TEST_BYTES = new TextEncoder().encode(TEST_STRING);
+      const TEST_ARRAY = [0x31, 0x32, 0x33, 0x34, 0x35, 0x36, 0x37, 0x38, 0x39];
+
+      // Should succeeed:
+      check(CRC32.fromString(TEST_STRING));
+      check(CRC32.fromBytes(TEST_BYTES));
+      check(CRC32.fromBytes(TEST_ARRAY));
+      // Incremental test case.
+      check(CRC32.fromBytes([0x35, 0x36, 0x37, 0x38, 0x39],  CRC32.fromBytes([0x31, 0x32, 0x33, 0x34])));
+
+      // Should fail:
+      // check(CRC32.fromString("ABCDEFGHI"));
+    </script>
+    <style>body { background-color: #111; color: #ccc; }</style>
+  </head>
+  <body></body>
+</html>
