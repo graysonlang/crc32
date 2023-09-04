@@ -15,8 +15,8 @@ const CRC_32_TABLE = (() => {
 // https://en.wikipedia.org/wiki/Computation_of_cyclic_redundancy_checks#CRC-32_algorithm
 export default class CRC32 {
   // Returns the 32-bit cyclic redundancy check (CRC) for the provided bytes.
-  static fromBytes(bytes, init = 0) {
-    let crc = (init ^ 0xFFFFFFFF) >>> 0;
+  static fromBytes(bytes, crc = 0) {
+    crc = (crc ^ 0xFFFFFFFF) >>> 0;
     const length = bytes.length;
     for (let i = 0; i < length; ++i) {
       crc = ((crc >>> 8) ^ CRC_32_TABLE[(crc ^ bytes[i]) & 0xFF]) >>> 0;
