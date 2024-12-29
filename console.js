@@ -38,9 +38,9 @@
               // If it's very sparse, only print indices and values.
               const contents = [];
               for (let k of Object.keys(o)) {
-                contents.push(k + ": " + (o.hasOwnProperty(k) ? _formatObjectHelper(o[k], depth + 1) : undefined));
+                contents.push(`${k}: ${(o.hasOwnProperty(k) ? _formatObjectHelper(o[k], depth + 1) : undefined)}`);
               }
-              return "Array(" + length + ") [" + contents.join(", ") + "]";
+              return `Array(${length}) [${contents.join(", ")}]`;
             }
           }
           // Dense or partially sparse array, just print out all the values with potential gaps.
@@ -48,16 +48,16 @@
           for (let i = 0; i < length; ++i) {
             contents.push((o.hasOwnProperty(i) ? _formatObjectHelper(o[i], depth + 1) : "empty"));
           }
-          return "Array(" + length + ") [" + contents.join(", ") + "]";
+          return `Array(${length}) [${contents.join(", ")}]`;
         }
         // Handle Objects.
         const contents = [];
         for (let k of Object.getOwnPropertyNames(o)) {
-          contents.push(k + ": " + (o.hasOwnProperty(k) ? _formatObjectHelper(o[k], depth + 1) : undefined));
+          contents.push(`${k}: ${(o.hasOwnProperty(k) ? _formatObjectHelper(o[k], depth + 1) : undefined)}`);
         }
-        return "{" + contents.join(", ") + "}";
+        return `{${contents.join(", ")}}`;
       } else if (o && (typeof o === "string" || o instanceof String)) {
-        return "\"" + o + "\"";
+        return `"${o}"`;
       } else if (o === undefined) {
         return "undefined";
       } else {
@@ -110,7 +110,7 @@
           break;
           // String
           case "s":
-          output.push("" + param.toString());
+          output.push(`${param.toString()}`);
           break;
         }
       }
@@ -150,7 +150,7 @@
 
   // Replace the built-in console methods.
   window.console.assert = function(assertion, ...rest) {
-    if (arguments.length && !assertion) _custom_log("error", "Assertion failed: " + (rest.length ? formatForLogging(...rest) : "console.assert"));
+    if (arguments.length && !assertion) _custom_log("error", `Assertion failed: ${(rest.length ? formatForLogging(...rest) : "console.assert")}`);
     _console_assert(...arguments);
   };
   window.console.debug = function() {
